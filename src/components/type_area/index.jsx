@@ -1,29 +1,31 @@
+// import moduls
 import { useEffect, useState } from "react";
+import PopUp from '../popup';
+import useCountTime from '../../hooks/useCountTime';
+import * as actions from './actions.js';
+import { AppRouter, GetAppRouter, SetAppRouter } from '../../hooks/AppRouter';
+
+// stylesheet
 import "./type_area.css";
-import PopUp from '../popup'
-import useCountTime from '../../hooks/useCountTime'
-import * as actions from './actions.js'
-import { useComp } from '../../global_state'
 
 // ------ Main Component ------ //
 function Main() {
-    // State Variable
+    // states
     const [btnCon, setbtnCon] = useState(true);
-    const [compName, setCompName] = useComp();
     const [referenceLetters, setReferenceLetters] = useState([]);
     const [typeLetters, setTypeLetters] = useState("");
-    // const [typeLettersRef, setTypeLettersRef] = useFocus();
-    const [targetTime, setTargetTime] = useState(10);
+    const [targetTime, setTargetTime] = useState(60);
     const [timeOption, setTimeOption] = useState("select");
-    // const [typeControl, setTypeControl] = useState("pase");
     const [modalBody, setModalBody] = useState("he he, I did something worng");
     const [modalTitle, setModalTitle] = useState("Warning");
     const [popUp, setPopUp] = useState(false);
+
+    // hooks
     const { timer, isActive, isPaused, handleStart, handlePause, handleResume, handleReset } = useCountTime(0);
 
+    // functions
     // ^^^^^^ On Click Ready ^^^^^^ //
     function onClickReady() {
-        // setTypeLettersRef();
         setbtnCon(false);
         // setTypeLetters("");
         setTimeOption("counter")
@@ -46,17 +48,15 @@ function Main() {
 
     // ^^^^^^ On Select Time ^^^^^^ //
     function selectTime(time) {
-        // console.log(time);   // Only Dev
         setTargetTime(time);
         setTimeOption("change");
     }
 
     // ^^^^^^ Back To Landing ^^^^^^ //
-    function backToLanding() {
-        // console.log("called");
-        setCompName("landing")
+    function backToHome() {
+        SetAppRouter('HomeCMP');
     }
-
+   
     useEffect(() => {
         if (timer >= targetTime) {
             onClickStop();
@@ -64,7 +64,7 @@ function Main() {
 
         if (localStorage.getItem("store") === null) {
             // Return to Landing 
-            backToLanding();
+            backToHome();
         } else {
             let LS_store = JSON.parse(localStorage.getItem("store"));
             setReferenceLetters(LS_store.reference_letters);
@@ -129,7 +129,7 @@ function Main() {
             {!isActive ? (
                 <span id="ready">
                     <button className="ready-button" onClick={onClickReady}>Ready</button><br />
-                    <button className="exit-button" onClick={backToLanding}>Exit</button>
+                    <button className="exit-button" onClick={backToHome}>Home</button>
                 </span>
             ) : (isActive && isPaused ? (
                 <span>

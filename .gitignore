@@ -1,5 +1,6 @@
 # dependencies
 /node_modules
+/work_space
 package-lock.json
 
 # testing

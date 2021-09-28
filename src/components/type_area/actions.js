@@ -1,3 +1,10 @@
+/**
+ * Generate Result
+ * @param {*} typeTime 
+ * @param {*} referenceCharacters 
+ * @param {*} typeCharactersStr 
+ * @returns `JSX.Element`
+ */
 export function generateResult(typeTime, referenceCharacters, typeCharactersStr) {
 
     let referenceWords = charTOword(referenceCharacters);
@@ -20,6 +27,7 @@ export function generateResult(typeTime, referenceCharacters, typeCharactersStr)
     // Total Characters
     result["totalChar"] = typeCharacters.length;
 
+    // Todo return on map
     // Space & Special Characters
     let ssc = 0;
     typeCharacters.map((e) => { if (e.search(/[a-zA-Z0-9]/) !== 0) ssc++; });
@@ -73,7 +81,11 @@ export function generateResult(typeTime, referenceCharacters, typeCharactersStr)
     </>;
 }
 
-// Time Format
+/**
+ * Time Format
+ * @param {*} timer 
+ * @returns `string`
+ */
 export const formatTime = (timer) => {
     const getSeconds = `0${(timer % 60)}`.slice(-2);
     const minutes = `${Math.floor(timer / 60)}`;
@@ -83,7 +95,11 @@ export const formatTime = (timer) => {
     return `${getMinutes} : ${getSeconds}`;
 }
 
-// character array to ward array
+/**
+ * Character Array To Ward Array
+ * @param {*} array 
+ * @returns `array`
+ */
 function charTOword(array) {
     let tempWord = "";
     let tempWordArray = [];

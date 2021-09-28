@@ -1,39 +1,33 @@
 // import moduls
-import { useEffect, useState, Suspense, lazy } from 'react';
-import { useComp } from './global_state';
+import { lazy } from 'react';
+import { AppRouter, GetAppRouter, SetAppRouter } from './hooks/AppRouter';
 
 // style sheets
 import './App.css';
 
 // import components
-const Landing = lazy(() => import('./components/landing'));
-const Type_area = lazy(() => import('./components/type_area'));
+const LandingCMP = lazy(() => import('./components/landing'));
+const HomeCMP = lazy(() => import('./components/home'));
+const Type_areaCMP = lazy(() => import('./components/type_area'));
 
+// Component Objects 
+const components = {
+  LandingCMP: LandingCMP,
+  HomeCMP: HomeCMP,
+  AboutCMP: HomeCMP,
+  HelpCMP: HomeCMP,
+  Type_areaCMP: Type_areaCMP,
+  // NOTFOUND: NOTFOUNDCOMPONENT,
+  DEFAULT: LandingCMP
+};
+
+// TEST
+window.onbeforeunload = () => false;
 
 // ------ Main Component ------ //
 function App() {
-  // states
-  const [compName, setSignUp] = useState("landing");
-  // hooks
-  const [getComp, setComp, subComp, unsubComp] = useComp();
-
-  // functions
-  const GStoCompName = () => setSignUp(getComp());
-
-  useEffect(() => {
-    subComp(GStoCompName);
-
-    return () => {
-      unsubComp(GStoCompName);
-    }
-  }, []);
   // Todo Add A Loading Component
-  return (<>
-    <Suspense fallback={<div>Loading...</div>}>
-      {compName === "landing" && <Landing />}
-      {compName === "type_area" && <Type_area />}
-    </Suspense>
-  </>);
+  return (<AppRouter components={components} />);
 }
 
 export default App;

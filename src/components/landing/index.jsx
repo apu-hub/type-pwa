@@ -1,103 +1,53 @@
 // import moduls
-import { useState } from "react";
-import { useComp } from '../../global_state'
-import PopUp from '../popup'
+import { AppRouter, GetAppRouter, SetAppRouter } from '../../hooks/AppRouter';
 
-// stylesheet
-import "./landing.css"
+// style sheets
+import './landing.css';
 
-// data
-import prefixedStory from '../../assests/data/prefixed_story.json'
-
+// Image
+import LI from "../../assets/images/landing _image.png";
+import GitHubLogo from "../../assets/images/GitHub-Mark/PNG/GitHub-Mark-Light-32px.png";
 
 // ------ Main Component ------ //
 function Main() {
-    // state
-    const [customStory, setCustomStory] = useState("");
-    const [popupBody, setPopupBody] = useState("he he, I did something worng");
-    const [popupTitle, setPopupTitle] = useState("Warning");
-    const [showPopUp, setShowPopUp] = useState(false);
-    // hooks
-    const [getComp, setComp] = useComp();
-
-    // functions
-    // ^^^^^^ Save Story To Local Storage ^^^^^^ //
-    function saveToLocalStorage(story) {
-        let storyArray = story.split("");
-        if (localStorage.getItem("store") === null) {
-            let LS_store = {
-                reference_letters: storyArray
-            };
-            localStorage.setItem("store", JSON.stringify(LS_store));
-        } else {
-            let LS_store = JSON.parse(localStorage.getItem("store"));
-            LS_store["reference_letters"] = storyArray;
-            localStorage.setItem("store", JSON.stringify(LS_store));
-        }
-    }
-
-    // ^^^^^^ On Click Start Now ^^^^^^ //
-    function onStartNow() {
-        // Check custom story lenth 
-        // minimum lenght 100 characters
-        if (customStory.length < 100) {
-            // Show Warning
-            setPopupBody(<>
-                Minimum <b>100 characters</b> needed for start
-            </>);
-            setPopupTitle("Warning");
-            setShowPopUp(true);
-            return;
-        }
-        // save it to local store 
-        saveToLocalStorage(customStory);
-
-        // Load Type Area
-        setComp("type_area");
-    }
-    function onClickPrefixed(storyNo) {
-        // save it to local store 
-        saveToLocalStorage(prefixedStory[storyNo].story);
-        // Load Type Area
-        setComp("type_area");
-    }
-
-    return (
-        <div className="container" id="landing">
-            <PopUp show={showPopUp} body={popupBody} title={popupTitle} onClose={() => setShowPopUp(false)} />
-            <div className="story custom-story">
-                <textarea
-                    className="bmp-cleaner "
-                    name="custom-story-textarea"
-                    placeholder="Remember, be nice!"
-                    id="custom-story-textarea"
-                    onChange={e => setCustomStory(e.target.value)}
-                    value={customStory}
-                ></textarea>
-                <br />
-                <button
-                    className="bmp-cleaner "
-                    id="start-now-button"
-                    onClick={onStartNow}
-                >Start Now</button>
-            </div>
-            <div className="story prefixed-story">
-                <div id="prefixed-story-buttons">
-                    <button className="story-button" onClick={() => { onClickPrefixed(0) }}>{prefixedStory[0].name}</button><br />
-                    <button className="story-button" onClick={() => { onClickPrefixed(1) }}>{prefixedStory[1].name}</button><br />
-                    <button className="story-button" onClick={() => { onClickPrefixed(2) }}>{prefixedStory[2].name}</button><br />
-                    <button className="story-button" onClick={() => { onClickPrefixed(3) }}>{prefixedStory[3].name}</button><br />
-                    <button className="story-button" onClick={() => { onClickPrefixed(4) }}>{prefixedStory[4].name}</button><br />
-                    <button className="story-button" onClick={() => { onClickPrefixed(5) }}>{prefixedStory[5].name}</button><br />
-                    <button className="story-button" onClick={() => { onClickPrefixed(6) }}>{prefixedStory[6].name}</button><br />
-                    <button className="story-button" onClick={() => { onClickPrefixed(7) }}>{prefixedStory[7].name}</button><br />
-                    <button className="story-button" onClick={() => { onClickPrefixed(8) }}>{prefixedStory[8].name}</button><br />
-                    <button className="story-button" onClick={() => { onClickPrefixed(9) }}>{prefixedStory[9].name}</button>
-                </div>
-            </div>
-
+    return (<div id="body">
+        <div className="container-div" id="navbar">
+            <span className="navbar-span"><a href="/">Type</a></span>
+            <span className="navbar-span" onClick={() => SetAppRouter('HelpCMP')}>help</span>
+            <span className="navbar-span" onClick={() => SetAppRouter('AboutCMP')}>about</span>
         </div>
-    )
+        <div className="container-div" id="header">
+            <div id="header-image"><img id="header-image-id" src={LI} alt="Landing Image" /></div>
+            <div id="header-context">
+                " If a lot of your time sitting at your desk is spent typing,
+                you might be able to improve your posture and
+                your health by increasing your typing speed."
+            </div>
+        </div>
+        <div className="container-div" id="context">
+            This will mean less time spent typing at your desk, and that will lead to more time spent standing up and stretching
+            <br />
+            so as not to hurt your back, neck, and shoulders.
+            <br />
+            The more you practice, the faster you will get. Reward yourself!
+        </div>
+        <div className="container-div" id="button">
+            <button id="lt-btn" onClick={() => SetAppRouter('HomeCMP')}>Launch Type Tester</button>
+        </div>
+        <div className="container-div" id="footer">
+            <div id="footer-left">
+                Created By &#160;
+                <a href="http://github.com/apu-hub" target="_blank" rel="noopener noreferrer">
+                    Chayan Sarkar
+                </a>
+            </div>
+            <div id="footer-right">
+                <a href="http://github.com/apu-hub/type-pwa" target="_blank" rel="noopener noreferrer">
+                    <img src={GitHubLogo} alt="Github Logo" />
+                </a>
+            </div>
+        </div>
+    </div>);
 }
 
 export default Main;
